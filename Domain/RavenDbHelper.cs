@@ -7,11 +7,11 @@ namespace Domain
 {
     public static class RavenDbHelper
     {
-        public static void ConfigureRaven(IContainer container)
+        public static void ConfigureRaven(IContainer container, string dataDirectory = @"C:\BlogData")
         {
             var documentStore = new EmbeddableDocumentStore
             {
-                DataDirectory = @"C:\BlogData",
+                DataDirectory = dataDirectory,
                 UseEmbeddedHttpServer = true
             };
             documentStore.Configuration.Port = 10000;

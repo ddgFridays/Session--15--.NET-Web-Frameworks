@@ -5,7 +5,6 @@ using Nancy;
 using Nancy.ModelBinding;
 using Raven.Client;
 
-
 namespace _02_Nancy
 {
     public class ArticleModule : NancyModule
