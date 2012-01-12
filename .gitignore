@@ -1,0 +1,10 @@
+[Bb]in/
+[Rr]elease/
+[Dd]ebug/
+BlogData/
+packages/
+
+*.suo
+*.user
+_ReSharper.WebFrameworks/
+*.vssscc
