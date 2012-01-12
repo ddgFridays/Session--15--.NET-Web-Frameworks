@@ -2,9 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Embedded;
+using Domain;
 using StructureMap;
 
 namespace _01_ASPNET_MVC
@@ -14,10 +12,8 @@ namespace _01_ASPNET_MVC
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
             RegisterRoutes(RouteTable.Routes);
-            ConfigureRavenDb(ObjectFactory.Container);
-
+            RavenDbHelper.ConfigureRaven(ObjectFactory.Container);
             DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
         }
 
@@ -56,27 +52,8 @@ namespace _01_ASPNET_MVC
 
         protected void Application_EndRequest(object sender, EventArgs args)
         {
-            var session = ObjectFactory.Container.GetInstance<IDocumentSession>();
-            if (session.Advanced.HasChanges)
-                session.SaveChanges();
+            RavenDbHelper.CleanUp(ObjectFactory.Container);
             ObjectFactory.ReleaseAndDisposeAllHttpScopedObjects();
-        }
-
-        private void ConfigureRavenDb(IContainer container)
-        {
-            var documentStore = new EmbeddableDocumentStore
-            {
-                DataDirectory = @"~\..\BlogData",
-                UseEmbeddedHttpServer = true
-            };
-            documentStore.Configuration.Port = 12345;
-            documentStore.Initialize();
-
-            container.Configure(x =>
-                {
-                    x.For<DocumentStore>().Singleton().Use(documentStore);
-                    x.For<IDocumentSession>().HttpContextScoped().Use(() => container.GetInstance<DocumentStore>().OpenSession());
-                });
         }
     }
 }

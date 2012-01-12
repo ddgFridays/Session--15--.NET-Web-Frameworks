@@ -24,7 +24,7 @@ namespace _01_ASPNET_MVC.Controllers
         [HttpGet]
         public ActionResult Get(string articletitle)
         {
-            var article = LoadArticleByTitle(articletitle);
+            var article = LoadArticle(articletitle);
             return Json(article, JsonRequestBehavior.AllowGet);
         }
 
@@ -39,7 +39,7 @@ namespace _01_ASPNET_MVC.Controllers
         [HttpPut]
         public ActionResult Update(string articletitle, Article article)
         {
-            var existingArticle = LoadArticleByTitle(articletitle);
+            var existingArticle = LoadArticle(articletitle);
             if (existingArticle != null)
             {
                 existingArticle.Title = article.Title;
@@ -53,16 +53,16 @@ namespace _01_ASPNET_MVC.Controllers
         [HttpDelete]
         public void Delete(string articletitle)
         {
-            var article = LoadArticleByTitle(articletitle);
+            var article = LoadArticle(articletitle);
             if(article != null)
                 _session.Delete(article);
         }
 
-        private Article LoadArticleByTitle(string title)
+        private Article LoadArticle(string title)
         {
             return _session
                 .Query<Article>()
-                .SingleOrDefault(a => a.Title.Equals(title));
+                .SingleOrDefault(a => a.Title.Equals(title.ToLower()));
         }
     }
 }
