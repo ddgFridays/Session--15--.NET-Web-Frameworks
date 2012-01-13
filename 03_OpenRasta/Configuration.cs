@@ -23,6 +23,12 @@ namespace _03_OpenRasta
                     .AtUri("/articles")
                     .HandledBy<ArticleHandler>()
                     .AsJsonDataContract();
+
+                ResourceSpace.Has
+                    .ResourcesOfType<Article>()
+                    .AtUri("/articles/{title}")
+                    .HandledBy<ArticleHandler>()
+                    .AsJsonDataContract();
             }
         }
     }

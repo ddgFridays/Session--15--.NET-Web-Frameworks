@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Domain;
 using Raven.Client;
@@ -46,8 +48,9 @@ namespace _01_ASPNET_MVC.Controllers
                 existingArticle.Content = article.Content;
                 _session.Store(existingArticle);
                 _session.SaveChanges();
+                return Json(existingArticle);
             }
-            return Json(article);
+            throw new HttpException(404, "Resource not found");
         }
 
         [HttpDelete]
