@@ -46,7 +46,7 @@ namespace _02_Nancy
             existingArticle.Content = updatedArticle.Content;
             _session.Store(existingArticle);
             _session.SaveChanges();
-            return Response.AsJson(updatedArticle);
+            return Response.AsJson(existingArticle);
         }
 
         private Response DeleteArticle(string title)
